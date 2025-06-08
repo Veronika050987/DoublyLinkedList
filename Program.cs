@@ -10,24 +10,40 @@ namespace DoublyLinkedList
     {
         static void Main(string[] args)
         {
-			DoublyLinkedList<int> list = new DoublyLinkedList<int>();
+			DoublyLinkedList queue = new DoublyLinkedList();
 
-			list.AddLast(10);
-			list.AddLast(20);
-			list.AddLast(30);
-			list.AddFirst(5);
+			queue.Enqueue(1);
+			queue.Enqueue(2);
+			queue.Enqueue(3);
+			queue.Enqueue(4);
 
-			Console.WriteLine("List forward: ");
-			list.PrintForward();
+			Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.WriteLine("\nСодержимое очереди:");
+			queue.Print();
+			Console.ResetColor();
 
-			Console.WriteLine("List backward: ");
-			list.PrintBackward();
+			Console.ForegroundColor = ConsoleColor.Magenta;
+			Console.WriteLine($"\nПервый элемент очереди (отсчёт с конца): \n{queue.Peek()}");
+			Console.ResetColor();
 
-			list.RemoveFirst();
-			list.RemoveLast();
+			Console.ForegroundColor = ConsoleColor.Blue;
+			Console.WriteLine($"\nУдалён элемент с конца очереди: \n{queue.Dequeue()}");
+			Console.WriteLine($"\nУдалён элемент с конца очереди: \n{queue.Dequeue()}");
+			Console.ResetColor();
 
-			Console.WriteLine("List forward after removing first and last: ");
-			list.PrintForward();
+			Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.WriteLine("\nСодержимое очереди после удаления элементов:");
+			queue.Print();
+			Console.ResetColor();
+
+			Console.WriteLine("\nОчистка очереди...");
+			queue.Clear();
+
+			Console.ForegroundColor = ConsoleColor.Red;
+			Console.WriteLine("\nСодержимое очереди после очистки:");
+			queue.Print();
+			Console.ResetColor();
+			Console.ReadKey();
 		}
     }
 }

@@ -6,115 +6,94 @@ using System.Threading.Tasks;
 
 namespace DoublyLinkedList
 {
-	class DoublyLinkedList<T>
+	class DoublyLinkedList
 	{
-		public Node<T> Head { get; private set; }
-		public Node<T> Tail { get; private set; }
-		public int Count { get; private set; }
+		Element Head { get; set; }
+		Element Tail { get; set; } // добавление конца очереди
+		public int Length { get; private set; }
 
 		public DoublyLinkedList()
 		{
 			Head = null;
 			Tail = null;
-			Count = 0;
+			Length = 0;
+			Console.WriteLine($"LConstructor:\t{GetHashCode()}");
 		}
 
-		public void AddLast(T data)
+		~DoublyLinkedList()
 		{
-			Node<T> newNode = new Node<T>(data);
+			Clear();
+			Console.WriteLine($"LDestructor:\t{GetHashCode()}");
+		}
+
+		public void Clear()
+		{
+			while (Head != null)
+			{
+				Dequeue();
+			}
+		}
+		
+		public void Enqueue(int data)// добавление в конец
+		{
+			Element newElement = new Element(data);
 
 			if (Head == null)
 			{
-				Head = newNode;
-				Tail = newNode;
+				Head = newElement;
+				Tail = newElement;
 			}
 			else
 			{
-				newNode.Previous = Tail;
-				Tail.Next = newNode;
-				Tail = newNode;
+				Tail.pNext = newElement;
+				newElement.pPrev = Tail;
+				Tail = newElement;
 			}
-
-			Count++;
+			Length++;
 		}
 
-		public void AddFirst(T data)
+		public int? Dequeue()		// удаление с головы
 		{
-			Node<T> newNode = new Node<T>(data);
-
 			if (Head == null)
 			{
-				Head = newNode;
-				Tail = newNode;
+				return null;
+			}
+
+			int dequeuedData = Head.Data;
+			Head = Head.pNext;
+
+			if (Head != null)
+			{
+				Head.pPrev = null;
 			}
 			else
 			{
-				newNode.Next = Head;
-				Head.Previous = newNode;
-				Head = newNode;
-			}
-
-			Count++;
-		}
-
-		public void RemoveFirst()
-		{
-			if (Head == null)
-				return;
-
-			if (Head == Tail)
-			{
-				Head = null;
 				Tail = null;
 			}
-			else
-			{
-				Head = Head.Next;
-				Head.Previous = null;
-			}
 
-			Count--;
+			Length--;
+			return dequeuedData;
 		}
 
-		public void RemoveLast()
+		public int? Peek() //определение первого элемента
 		{
-			if (Tail == null)
-				return;
-
-			if (Head == Tail)
+			if (Head == null)
 			{
-				Head = null;
-				Tail = null;
+				return null;
 			}
-			else
-			{
-				Tail = Tail.Previous;
-				Tail.Next = null;
-			}
-
-			Count--;
+			return Head.Data;
 		}
 
-		public void PrintForward()
+		public void Print()
 		{
-			Node<T> current = Head;
-			while (current != null)
+			for (Element Temp = Head; Temp != null; Temp = Temp.pNext)
 			{
-				Console.Write(current.Data + " ");
-				current = current.Next;
+				Console.Write($"{Temp.Data}\t");
 			}
 			Console.WriteLine();
-		}
-
-		public void PrintBackward()
-		{
-			Node<T> current = Tail;
-			while (current != null)
-			{
-				Console.Write(current.Data + " ");
-				current = current.Previous;
-			}
-			Console.WriteLine();
+			Console.ForegroundColor = ConsoleColor.Green;
+			Console.WriteLine($"\nКоличество элементов в очереди: \n{Length}");
+			Console.ResetColor();
 		}
 	}
 }
